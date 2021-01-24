@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  project_id: 
+  encrypted_secret_key: MyString
+  public_key: MyString
+
+two:
+  project_id: 
+  encrypted_secret_key: MyString
+  public_key: MyString
