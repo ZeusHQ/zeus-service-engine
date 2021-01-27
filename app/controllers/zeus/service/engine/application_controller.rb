@@ -3,8 +3,13 @@ module Zeus
     module Engine
       class ApplicationController < ActionController::Base
         before_action :authorize_api_request!
+        skip_before_action :verify_authenticity_token
 
         private
+        def render_struct(s)
+          render json: {success?: s.success?, errors: s.errors}
+        end
+
         def authorize_api_request!
           result = AuthCommands::AuthorizeApiRequest.call(request.headers, cookies)
           if result.success?
@@ -15,7 +20,7 @@ module Zeus
               @current_permissions ||= "zeus"
             end
           else
-            render json: {error: result.errors.join(". ")} and return false
+            render_struct(result) and return false
           end
         end
 

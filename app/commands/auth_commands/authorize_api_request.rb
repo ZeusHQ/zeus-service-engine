@@ -37,7 +37,6 @@ class AuthCommands::AuthorizeApiRequest
         if zeus_key.present? && zeus_key == ENV["ZEUS_AUTH_KEY"]
             return OpenStruct.new(success?: true)
         else
-            puts(ENV.inspect)
             return OpenStruct.new(success?: false, errors: ["Invalid zeus key"])
         end
     end

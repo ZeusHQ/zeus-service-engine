@@ -9,6 +9,21 @@ module Zeus::Service::Engine
 
     before_validation :generate_keys, on: :create
 
+    def as_json(opts={})
+      json = {
+        id: self.id,
+        project_id: self.project_id,
+        scope: self.scope,
+        created_at: self.created_at,
+        updated_at: self.updated_at,
+      }
+      if opts[:include_keys]
+        json[:public_key] = self.public_key
+        json[:secret_key] = self.secret_key
+      end
+      json
+    end
+
     def secret_key
       EncryptionService.decrypt(self.encrypted_secret_key)
     end
