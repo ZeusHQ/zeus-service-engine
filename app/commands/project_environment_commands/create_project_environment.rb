@@ -1,13 +1,14 @@
 class ProjectEnvironmentCommands::CreateProjectEnvironment
     include Zeus::Service::Engine::Concerns::Callable
 
-    attr_accessor :current_env, :current_permissions, :project_id, :scope
+    attr_accessor :current_env, :current_permissions, :project_id, :scope, :properties
 
     def initialize(current_env, current_permissions, params)
         self.current_env = current_env
         self.current_permissions = current_permissions
         self.project_id = params[:project_id]
         self.scope = params[:scope]
+        self.properties = params[:properties] || {}
     end
 
     def call
@@ -18,7 +19,7 @@ class ProjectEnvironmentCommands::CreateProjectEnvironment
         exists = Zeus::Service::Engine::ProjectEnvironment.where(project_id: @project_id, scope: @scope).exists?
         return OpenStruct.new(success?: false, errors: ["Project environment already exists with that id and scope"]) if exists
 
-        env = Zeus::Service::Engine::ProjectEnvironment.new(project_id: @project_id, scope: @scope)
+        env = Zeus::Service::Engine::ProjectEnvironment.new(project_id: @project_id, scope: @scope, properties: @properties)
 
         if env.save
             return OpenStruct.new(success?: true, payload: env)

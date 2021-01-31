@@ -14,6 +14,7 @@ module Zeus::Service::Engine
         id: self.id,
         project_id: self.project_id,
         scope: self.scope,
+        properties: self.properties,
         created_at: self.created_at,
         updated_at: self.updated_at,
       }

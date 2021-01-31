@@ -9,7 +9,7 @@ gem 'faraday'
 gem 'zeus-sdk', path: "../../zeus-sdk-ruby"
 
 group :development do
-  # gem 'sqlite3'
+  gem 'sqlite3'
 end
 
 # To use a debugger

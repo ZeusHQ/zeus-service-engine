@@ -16,6 +16,6 @@ class Zeus::Service::Engine::Api::V1::ProjectEnvironmentsController < Zeus::Serv
 
     protected
     def create_params
-        params.require(:project_environment).permit(:project_id, :scope)
+        params.require(:project_environment).permit(:project_id, :scope, :properties)
     end
 end
