@@ -2,6 +2,7 @@ PATH
   remote: ../../zeus-sdk-ruby
   specs:
     zeus-sdk (0.1.0)
+      activesupport
       httparty
 
 PATH

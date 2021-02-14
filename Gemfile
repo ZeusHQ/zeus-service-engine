@@ -6,7 +6,7 @@ gemspec
 
 gem 'rack-cors'
 gem 'faraday'
-gem 'zeus-sdk', path: "../../zeus-sdk-ruby"
+gem 'zeus-sdk-ruby', path: "../../zeus-sdk-ruby"
 
 group :development do
   gem 'sqlite3'
