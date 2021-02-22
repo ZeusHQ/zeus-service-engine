@@ -1,7 +1,7 @@
 PATH
   remote: ../../zeus-ruby
   specs:
-    zeus-sdk (0.1.0)
+    zeus (0.1.8)
       activesupport
       httparty
 
@@ -97,7 +97,7 @@ GEM
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2020.1104)
+    mime-types-data (3.2021.0212)
     mimemagic (0.3.5)
     mini_mime (1.0.2)
     mini_portile2 (2.5.0)
@@ -165,7 +165,7 @@ DEPENDENCIES
   faraday
   rack-cors
   sqlite3
-  zeus-sdk!
+  zeus!
   zeus-service-engine!
 
 BUNDLED WITH
