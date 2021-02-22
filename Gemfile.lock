@@ -1,5 +1,5 @@
 PATH
-  remote: ../../zeus-sdk-ruby
+  remote: ../../zeus-ruby
   specs:
     zeus-sdk (0.1.0)
       activesupport

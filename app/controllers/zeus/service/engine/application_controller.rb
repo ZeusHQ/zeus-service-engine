@@ -4,23 +4,73 @@ module Zeus
       class ApplicationController < ActionController::Base
         before_action :authorize_api_request!
         skip_before_action :verify_authenticity_token
+        around_action :handle_exceptions
 
         private
-        def render_struct(s)
-          render json: {success?: s.success?, errors: s.errors}
+
+        def handle_exceptions
+          begin
+            yield
+          rescue InvalidAuthorization => e
+            Rails.logger.error e.message
+            render_error(e.message, status=403) && return
+          rescue ActiveRecord::RecordNotFound => e
+          #   Raven.capture_exception(e)
+            render_error(ERROR_RECORD_NOT_FOUND, status=404) && return
+          rescue ActiveRecord::RecordInvalid => e
+          #   Raven.capture_exception(e)
+            render_unprocessable_entity_response(e) && return
+          rescue ArgumentError => e
+            Rails.logger.error e.message
+            Rails.logger.error e.backtrace.join("\n")
+            render_error("Invalid request: #{e}.", status=400) && return
+          #   Raven.capture_exception(e)
+          
+          rescue StandardError => e
+            Rails.logger.error e.message
+            Rails.logger.error e.backtrace.join("\n")
+            render_error("Internal server error: #{e}.", status=500) && return
+          end
+        end
+
+        def render_error(errors, status=200)
+          render json: {
+            success: false, 
+            error: errors.is_a?(Array) ? errors : [errors]
+          }, status: status
+        end
+
+        def render_resource(resource, status=200)
+          render json: {
+            object: resource,
+            success: true,
+            type: resource.class.name
+          }, status: status
+        end
+
+        def render_resources(resources, type, status=200)
+          render json: {
+            objects: resources,
+            success: true,
+            type: type
+          }, status: status
+        end
+
+        def require_zeus_permissions!
+          if self.current_permissions != PERMISSION_ZEUS
+            render_error([ERROR_NOT_AUTHORIZED], status=403) and return false
+          end
         end
 
         def authorize_api_request!
           result = AuthCommands::AuthorizeApiRequest.call(request.headers, cookies)
+          
+          puts(result.inspect)
           if result.success?
-            if result.payload.present?
-              @current_env ||= result.payload.env if result.payload.env
-              @current_permissions ||= result.payload.permissions if result.payload.permissions
-            else
-              @current_permissions ||= "zeus"
-            end
+            @current_env ||= result.payload[:env]
+            @current_permissions ||= result.payload[:permissions]
           else
-            render_struct(result) and return false
+            render_error(result.errors) and return false
           end
         end
 

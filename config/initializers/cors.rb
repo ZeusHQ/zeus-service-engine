@@ -9,7 +9,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     allow do
         origins do |source, env|
             if Rails.env.production?
-                return true if ["www.zeusdev.co", "admin.zeusdev.co"].include?(source)
+                return true if ["www.zeusdev.io", "admin.zeusdev.io"].include?(source)
                 return true if source.ends_with?("zeusdev.app")
             end
 
@@ -20,7 +20,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
             ZeusServices::DomainExists.call(source).success?
         end
 
-        origins 'localhost:3001' if Rails.env.development?
+        origins ['localhost:3001', 'localhost:3020'] if Rails.env.development?
   
         resource '*',
             headers: :any,

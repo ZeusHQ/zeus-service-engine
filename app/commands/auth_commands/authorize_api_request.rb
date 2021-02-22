@@ -8,6 +8,10 @@ class AuthCommands::AuthorizeApiRequest
         self.cookies = cookies
     end
 
+    def authorized?
+        true
+    end
+
     def call
         zeus_key = self.http_zeus_key_header
 
@@ -18,46 +22,53 @@ class AuthCommands::AuthorizeApiRequest
             secret_key = self.http_secret_key_header
 
             env = Zeus::Service::Engine::ProjectEnvironment.where(public_key: public_key).first
+            return OpenStruct.new(success?: false, errors: ["Invalid public key"]) if env.blank? 
 
-            if env.present?
-                return OpenStruct.new(success?: true, errors: nil, payload: {env: env, public: true}) if private_key.blank?
-                return OpenStruct.new(success?: true, errors: nil, payload: {env: env, public: false}) if private_key == env.secret_key
-                return OpenStruct.new(success?: false, errors: ["Invalid private key"])
-            else
-                return OpenStruct.new(success?: false, errors: ["Invalid public key"])
-            end
+            return OpenStruct.new(success?: true, errors: nil, payload: {env: env, permissions: PERMISSION_PRIVATE}) if secret_key == env.secret_key 
+            return OpenStruct.new(success?: true, errors: nil, payload: {env: env, permissions: PERMISSION_PUBLIC})
         end
-
-        return OpenStruct.new(success?: false, errors: ["Unable to authorize"])
     end
 
     protected
 
     def authenticate_zeus_request(zeus_key)
-        if zeus_key.present? && zeus_key == ENV["ZEUS_AUTH_KEY"]
-            return OpenStruct.new(success?: true)
+        if zeus_key.present? && zeus_key == ENV[HTTP_ZEUS_AUTH_KEY]
+            if self.http_zeus_env_id_header.present?
+                env = Zeus::Service::Engine::ProjectEnvironment.find(self.http_zeus_env_id_header)
+                puts("self.http_zeus_env_id_header", self.http_zeus_env_id_header.inspect)
+                return OpenStruct.new(success?: true, payload: {env: env, permissions: PERMISSION_ZEUS})
+            else
+                return OpenStruct.new(success?: true, payload: {env: nil, permissions: PERMISSION_ZEUS})
+            end
         else
             return OpenStruct.new(success?: false, errors: ["Invalid zeus key"])
         end
     end
 
+    def http_zeus_env_id_header
+        if @headers[HTTP_X_ZEUS_ENVIRONMENT_ID].present?
+            return @headers[HTTP_X_ZEUS_ENVIRONMENT_ID]
+        end
+        nil
+    end
+
     def http_zeus_key_header
-        if @headers['HTTP_X_ZEUS_AUTH_KEY'].present?
-          return @headers['HTTP_X_ZEUS_AUTH_KEY']
+        if @headers[HTTP_X_ZEUS_AUTH_KEY].present?
+          return @headers[HTTP_X_ZEUS_AUTH_KEY]
         end
         nil
     end
 
     def http_public_key_header        
-        if @headers["HTTP_X_ZEUS_SERVICE_PUBLIC_KEY"].present?
-          return @headers["HTTP_X_ZEUS_SERVICE_PUBLIC_KEY"]
+        if @headers[HTTP_X_ZEUS_SERVICE_PUBLIC_KEY].present?
+          return @headers[HTTP_X_ZEUS_SERVICE_PUBLIC_KEY]
         end
         nil
     end
 
     def http_secret_key_header
-        if @headers["HTTP_X_ZEUS_SERVICE_SECRET_KEY"].present?
-          return @headers["HTTP_X_ZEUS_SERVICE_SECRET_KEY"]
+        if @headers[HTTP_X_ZEUS_SERVICE_SECRET_KEY].present?
+          return @headers[HTTP_X_ZEUS_SERVICE_SECRET_KEY]
         end
         nil
     end
