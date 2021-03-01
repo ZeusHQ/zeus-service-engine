@@ -65,7 +65,6 @@ module Zeus
         def authorize_api_request!
           result = AuthCommands::AuthorizeApiRequest.call(request.headers, cookies)
           
-          puts(result.inspect)
           if result.success?
             @current_env ||= result.payload[:env]
             @current_permissions ||= result.payload[:permissions]

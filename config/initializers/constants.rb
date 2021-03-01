@@ -11,3 +11,8 @@ PERMISSION_PRIVATE = "private"
 
 ERROR_NOT_AUTHORIZED = "Not authorized"
 ERROR_RECORD_NOT_FOUND = "Record not found"
+
+MIN_PAGE = 1
+MIN_PER_PAGE = 10
+MAX_PER_PAGE = 100
+DEFAULT_ORDER = "created_at desc"

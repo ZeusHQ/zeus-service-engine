@@ -22,8 +22,8 @@ class AuthCommands::AuthorizeApiRequest
             secret_key = self.http_secret_key_header
 
             env = Zeus::Service::Engine::ProjectEnvironment.where(public_key: public_key).first
+            
             return OpenStruct.new(success?: false, errors: ["Invalid public key"]) if env.blank? 
-
             return OpenStruct.new(success?: true, errors: nil, payload: {env: env, permissions: PERMISSION_PRIVATE}) if secret_key == env.secret_key 
             return OpenStruct.new(success?: true, errors: nil, payload: {env: env, permissions: PERMISSION_PUBLIC})
         end
@@ -35,7 +35,6 @@ class AuthCommands::AuthorizeApiRequest
         if zeus_key.present? && zeus_key == ENV[HTTP_ZEUS_AUTH_KEY]
             if self.http_zeus_env_id_header.present?
                 env = Zeus::Service::Engine::ProjectEnvironment.find(self.http_zeus_env_id_header)
-                puts("self.http_zeus_env_id_header", self.http_zeus_env_id_header.inspect)
                 return OpenStruct.new(success?: true, payload: {env: env, permissions: PERMISSION_ZEUS})
             else
                 return OpenStruct.new(success?: true, payload: {env: nil, permissions: PERMISSION_ZEUS})
