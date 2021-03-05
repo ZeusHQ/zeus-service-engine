@@ -10,7 +10,7 @@ module Zeus::Service::Engine::Concerns::Pageable
     end
 
     def cleaned_order
-        DEFAULT_ORDER
+        "#{self.class.name.split("::").first.gsub("Commands", "").tableize}.created_at desc"
     end
     
     def cleaned_page
