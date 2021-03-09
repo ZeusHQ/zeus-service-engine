@@ -17,7 +17,10 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
                 return true
             end
 
-            ZeusServices::DomainExists.call(source).success?
+            # ZeusServices::DomainExists.call(source).success?
+            client = Zeus::V1::Client::Core.new("")
+            res = client.check_domain(source)
+            return res.parsed_response["exists"]
         end
 
         origins ['localhost:3001', 'localhost:3020'] if Rails.env.development?
