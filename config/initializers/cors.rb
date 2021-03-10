@@ -8,16 +8,16 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
     allow do
         origins do |source, env|
-            result = false
+            domain = source.downcase.strip.gsub(/https:\/\//, "")
+            result = true
+           
             if Rails.env.production?
                 result = ["https://www.zeusdev.io", "https://admin.zeusdev.io"].include?(domain) || domain.ends_with?("zeusdev.app")
-                if !result
+                if result == false
                     client = Zeus::V1::Client::Core.new("")
                     res = client.check_domain(domain)
                     result = res.parsed_response["exists"]
                 end
-            elsif if Rails.env.development?
-                result = true
             end
 
             result
