@@ -12,7 +12,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
             result = true
            
             if Rails.env.production?
-                result = ["https://www.zeusdev.io", "https://admin.zeusdev.io"].include?(domain) || domain.ends_with?("zeusdev.app")
+                result = ["www.zeusdev.io", "admin.zeusdev.io"].include?(domain) || domain.ends_with?("zeusdev.app")
                 if result == false
                     client = Zeus::V1::Client::Core.new("")
                     res = client.check_domain(domain)
