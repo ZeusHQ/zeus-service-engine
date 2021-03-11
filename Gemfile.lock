@@ -153,7 +153,7 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     zeitwerk (2.4.2)
-    zeus_ruby (0.4.3)
+    zeus_ruby (0.4.4)
       activesupport (~> 6.1.1)
       httparty (~> 0.18.1)
       jwt (~> 2.2.2)
@@ -166,7 +166,7 @@ DEPENDENCIES
   rack-cors
   sqlite3
   zeus-service-engine!
-  zeus_ruby (~> 0.4.3)
+  zeus_ruby (~> 0.4.4)
 
 BUNDLED WITH
    2.2.3
