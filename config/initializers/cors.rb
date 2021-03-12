@@ -7,26 +7,27 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
     allow do
-        origins do |source, env|
-            domain = URI(source.downcase.strip).host
-            # domain = source.downcase.strip.gsub(/https:\/\//, "")
-            result = true
+        origins '*'
+        # origins do |source, env|
+        #     domain = URI(source.downcase.strip).host
+        #     # domain = source.downcase.strip.gsub(/https:\/\//, "")
+        #     result = true
            
-            if Rails.env.production?
-                result = ["zeusdev.io", "www.zeusdev.io", "admin.zeusdev.io"].include?(domain) || domain.ends_with?("zeusdev.app")
-                if result == false
-                    client = ZeusSdk::V1::Core.new("")
-                    res = client.check_domain(domain)
-                    result = res.parsed_response["exists"]
-                end
-            end
+        #     if Rails.env.production?
+        #         result = ["zeusdev.io", "www.zeusdev.io", "admin.zeusdev.io"].include?(domain) || domain.ends_with?("zeusdev.app")
+        #         if result == false
+        #             client = ZeusSdk::V1::Core.new("")
+        #             res = client.check_domain(domain)
+        #             result = res.parsed_response["exists"]
+        #         end
+        #     end
 
-            puts("CORS #{source} // #{domain} = #{result}")
+        #     puts("CORS #{source} // #{domain} = #{result}")
 
-            result
-        end
+        #     result
+        # end
 
-        origins ['localhost:3001', 'localhost:3020'] if Rails.env.development?
+        # origins ['localhost:3001', 'localhost:3020'] if Rails.env.development?
   
         resource '*',
             headers: :any,
