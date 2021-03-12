@@ -21,5 +21,5 @@ Gem::Specification.new do |spec|
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   spec.add_dependency "rails", "~> 6.1.1"
-  spec.add_dependency "zeus_ruby", "~> 0.4.5"
+  spec.add_dependency "zeus_sdk", "~> 0.4.6"
 end
