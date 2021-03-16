@@ -6,15 +6,11 @@ class ProjectEnvironmentCommands::UpdateProjectEnvironment
     def initialize(current_env, current_permissions, id, params)
         self.current_env = current_env
         self.current_permissions = current_permissions
-        self.id = params[:id]
+        self.id = id
         self.properties = params[:properties]
     end
 
     def authorized?
-        puts("#"*100)
-        puts(self.id.inspect, self.current_permissions.inspect)
-        puts("#"*100)
-
         return false if self.id.blank?
         return false if self.current_permissions != PERMISSION_ZEUS
         true
