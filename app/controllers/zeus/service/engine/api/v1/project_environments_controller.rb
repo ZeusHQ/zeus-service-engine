@@ -23,7 +23,7 @@ class Zeus::Service::Engine::Api::V1::ProjectEnvironmentsController < Zeus::Serv
 
     def update
         res = ProjectEnvironmentCommands::UpdateProjectEnvironment.call(current_env, current_permissions, params[:id], update_params)
-        
+
         if res.success?
             render_resource(res.payload)
         else
@@ -37,6 +37,6 @@ class Zeus::Service::Engine::Api::V1::ProjectEnvironmentsController < Zeus::Serv
     end
 
     def update_params
-        params.require(:project_environment).permit(:properties)
+        params.require(:project_environment).permit(properties: {})
     end
 end

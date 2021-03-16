@@ -11,8 +11,12 @@ class ProjectEnvironmentCommands::UpdateProjectEnvironment
     end
 
     def authorized?
+        puts("#"*100)
+        puts(@id.inspect, @current_permissions.inspect)
+        puts("#"*100)
+        
         return false if @id.blank?
-        return false if @current_permissions != PERMISSION_ZEUS
+        return false if @current_permissions !=PERMISSION_ZEUS
         true
     end
 
