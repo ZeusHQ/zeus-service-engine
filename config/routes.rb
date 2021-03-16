@@ -3,7 +3,7 @@ Zeus::Service::Engine::Engine.routes.draw do
     
     namespace :api do
         namespace :v1 do
-            resources :project_environments, only: [:index, :create, :show, :destroy]
+            resources :project_environments
         end
     end
 end
