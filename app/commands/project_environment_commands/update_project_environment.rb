@@ -12,21 +12,16 @@ class ProjectEnvironmentCommands::UpdateProjectEnvironment
 
     def authorized?
         puts("#"*100)
-        puts(@id.inspect, @current_permissions.inspect)
+        puts(self.id.inspect, self.current_permissions.inspect)
         puts("#"*100)
-        
-        return false if @id.blank?
-        return false if @current_permissions !=PERMISSION_ZEUS
+
+        return false if self.id.blank?
+        return false if self.current_permissions != PERMISSION_ZEUS
         true
     end
 
     def call
-        # # Make sure it doesn't already exist
-        # exists = Zeus::Service::Engine::ProjectEnvironment.where(project_id: @project_id, scope: @scope).exists?
-        # return OpenStruct.new(success?: false, errors: ["Project environment already exists with that id and scope"]) if exists
-
-        env = Zeus::Service::Engine::ProjectEnvironment.find(id)
-
+        env = Zeus::Service::Engine::ProjectEnvironment.find(self.id)
         env.properties = env.properties.update(params[:properties]) if params[:properties].present?
 
         if env.save
