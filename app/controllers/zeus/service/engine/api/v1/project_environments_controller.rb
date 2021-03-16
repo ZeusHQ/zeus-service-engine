@@ -22,6 +22,8 @@ class Zeus::Service::Engine::Api::V1::ProjectEnvironmentsController < Zeus::Serv
     end
 
     def update
+        puts(params.inspect)
+        puts(params[:id])
         res = ProjectEnvironmentCommands::UpdateProjectEnvironment.call(current_env, current_permissions, params[:id], update_params)
 
         if res.success?
