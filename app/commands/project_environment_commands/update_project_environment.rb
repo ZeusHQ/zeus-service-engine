@@ -18,7 +18,7 @@ class ProjectEnvironmentCommands::UpdateProjectEnvironment
 
     def call
         env = Zeus::Service::Engine::ProjectEnvironment.find(self.id)
-        env.properties = env.properties.update(params[:properties]) if params[:properties].present?
+        env.properties = env.properties.update(self.properties) if self.properties.present?
 
         if env.save
             return OpenStruct.new(success?: true, payload: env)
