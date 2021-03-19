@@ -62,6 +62,12 @@ module Zeus
           end
         end
 
+        def require_private_permissions!
+          if self.current_permissions != PERMISSION_ZEUS && self.current_permissions != PERMISSION_PRIVATE
+            render_error([ERROR_NOT_AUTHORIZED], status=403) and return false
+          end
+        end
+
         def authorize_api_request!
           result = AuthCommands::AuthorizeApiRequest.call(request.headers, cookies)
           
