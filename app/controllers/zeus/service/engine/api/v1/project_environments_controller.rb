@@ -31,6 +31,16 @@ class Zeus::Service::Engine::Api::V1::ProjectEnvironmentsController < Zeus::Serv
         end
     end
 
+    def destroy
+        res = ProjectEnvironmentCommands::DestroyProjectEnvironment.call(current_env, current_permissions, params[:id])
+
+        if res.success?
+            render_resource(res.payload)
+        else
+            render_error(res.errors)
+        end
+    end
+
     protected
     def create_params
         params.require(:project_environment).permit(:properties, :scope)
