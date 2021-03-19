@@ -22,7 +22,7 @@ class ProjectEnvironmentCommands::CreateProjectEnvironment
         # exists = Zeus::Service::Engine::ProjectEnvironment.where(project_id: @project_id, scope: @scope).exists?
         # return OpenStruct.new(success?: false, errors: ["Project environment already exists with that id and scope"]) if exists
 
-        env = Zeus::Service::Engine::ProjectEnvironment.new(properties: @properties)
+        env = Zeus::Service::Engine::ProjectEnvironment.new(properties: self.properties)
 
         if env.save
             return OpenStruct.new(success?: true, payload: env)

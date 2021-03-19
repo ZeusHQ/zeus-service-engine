@@ -14,6 +14,7 @@ class Zeus::Service::Engine::Api::V1::ProjectEnvironmentsController < Zeus::Serv
 
     def create
         res = ProjectEnvironmentCommands::CreateProjectEnvironment.call(current_env, current_permissions, create_params)
+        
         if res.success?
             render_resource(res.payload.as_json(include_keys: true))
         else
@@ -43,7 +44,7 @@ class Zeus::Service::Engine::Api::V1::ProjectEnvironmentsController < Zeus::Serv
 
     protected
     def create_params
-        params.require(:project_environment).permit(:properties, :scope)
+        params.require(:project_environment).permit(properties: {}, :scope)
     end
 
     def update_params
