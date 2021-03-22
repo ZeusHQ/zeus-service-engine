@@ -12,6 +12,7 @@ module Zeus::Service::Engine
     def as_json(opts={})
       json = {
         id: self.id,
+        name: self.name,
         scope: self.scope,
         properties: self.properties,
         created_at: self.created_at,

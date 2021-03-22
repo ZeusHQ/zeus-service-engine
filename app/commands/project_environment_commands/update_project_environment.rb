@@ -1,13 +1,14 @@
 class ProjectEnvironmentCommands::UpdateProjectEnvironment
     include Zeus::Service::Engine::Concerns::Callable
 
-    attr_accessor :current_env, :current_permissions, :id, :properties 
+    attr_accessor :current_env, :current_permissions, :id, :properties, :name
 
     def initialize(current_env, current_permissions, id, params)
         self.current_env = current_env
         self.current_permissions = current_permissions
         self.id = id
         self.properties = params[:properties]
+        self.name = params[:name]
     end
 
     def authorized?
@@ -18,6 +19,7 @@ class ProjectEnvironmentCommands::UpdateProjectEnvironment
 
     def call
         env = Zeus::Service::Engine::ProjectEnvironment.find(self.id)
+        env.name = self.name if self.name.present?
         env.properties = env.properties.update(self.properties) if self.properties.present?
 
         if env.save

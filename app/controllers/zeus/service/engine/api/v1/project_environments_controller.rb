@@ -44,10 +44,10 @@ class Zeus::Service::Engine::Api::V1::ProjectEnvironmentsController < Zeus::Serv
 
     protected
     def create_params
-        params.require(:project_environment).permit(:scope, properties: {})
+        params.require(:project_environment).permit(:scope, :name, properties: {})
     end
 
     def update_params
-        params.require(:project_environment).permit(properties: {})
+        params.require(:project_environment).permit(:name, properties: {})
     end
 end
