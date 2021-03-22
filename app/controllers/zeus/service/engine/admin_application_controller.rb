@@ -4,8 +4,8 @@
 #
 # If you want to add pagination or other controller-level concerns,
 # you're free to overwrite the RESTful controller actions.
-module Zeus::Service::Engine::Admin
-    class ApplicationController < Administrate::ApplicationController
+module Zeus::Service::Engine
+    class AdminApplicationController < Administrate::ApplicationController
       before_action :authenticate_admin
   
       def authenticate_admin
