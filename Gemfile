@@ -7,6 +7,7 @@ gemspec
 gem 'rack-cors'
 gem 'faraday'
 gem 'zeus_sdk', '>= 0.5.1'
+gem 'administrate'
 
 group :development do
   gem 'sqlite3'
