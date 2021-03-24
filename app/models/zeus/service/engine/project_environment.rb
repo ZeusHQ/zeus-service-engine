@@ -33,6 +33,10 @@ module Zeus::Service::Engine
       self.encrypted_secret_key = EncryptionService.encrypt(value)
     end
 
+    def verification_key
+      @verification_key ||= ActiveSupport::MessageEncryptor.new(self.secret_key).encrypt_and_sign(self.public_key)
+    end
+
     private
     def slug
       Rails.application.class.module_parent.name.clone.gsub("Service", "").downcase.parameterize.gsub(/[^a-z]/, '')
