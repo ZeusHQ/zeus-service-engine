@@ -3,10 +3,10 @@ class ProjectEnvironmentCommands::DestroyProjectEnvironment
 
     attr_accessor :current_env, :current_permissions, :id
 
-    def initialize(current_env, current_permissions, params)
+    def initialize(current_env, current_permissions, id)
         self.current_env = current_env
         self.current_permissions = current_permissions
-        self.id = params[:id]
+        self.id = id
     end
 
     def authorized?
