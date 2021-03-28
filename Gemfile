@@ -6,7 +6,7 @@ gemspec
 
 gem 'rack-cors'
 gem 'faraday'
-gem 'zeus_sdk', '>= 0.6.2'
+gem 'zeus_sdk', '>= 0.6.3'
 gem 'administrate'
 
 group :development do
