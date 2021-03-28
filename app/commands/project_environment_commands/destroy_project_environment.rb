@@ -21,10 +21,9 @@ class ProjectEnvironmentCommands::DestroyProjectEnvironment
         # return OpenStruct.new(success?: false, errors: ["Project environment already exists with that id and scope"]) if exists
 
         env = Zeus::Service::Engine::ProjectEnvironment.find(id)
-
+        cloned = env.clone
         if env.destroy
-            env.id = id
-            return OpenStruct.new(success?: true, payload: env)
+            return OpenStruct.new(success?: true, payload: cloned)
         else 
             return OpenStruct.new(success?: false, errors: env.errors.full_messages)
         end
