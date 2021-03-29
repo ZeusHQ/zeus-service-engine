@@ -48,9 +48,12 @@ module Zeus
           }, status: status
         end
 
-        def render_resources(resources, type, status=200)
+        def render_resources(resources, type, total, page, num_pages, status=200)
           render json: {
             objects: resources,
+            total: total,
+            page: page,
+            num_pages: num_pages,
             success: true,
             type: type
           }, status: status
@@ -66,6 +69,18 @@ module Zeus
           if self.current_permissions != PERMISSION_ZEUS && self.current_permissions != PERMISSION_PRIVATE
             render_error([ERROR_NOT_AUTHORIZED], status=403) and return false
           end
+        end
+
+        def clean_page
+          clamp(params[:page], 1, 10000)
+        end
+
+        def clean_per_page
+          clamp(params[:per_page], 1, 100)
+        end
+
+        def clamp(val, min, max)
+          [min, [val || min, max].min].max
         end
 
         def authorize_api_request!
