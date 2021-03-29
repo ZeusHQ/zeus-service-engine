@@ -26,6 +26,6 @@ module Zeus::Service::Engine::Concerns::Pageable
     end
 
     def num_pages
-        @num_pages ||= (@total / cleaned_per_page).ceil
+        @num_pages ||= (@total / cleaned_per_page.to_f).ceil
     end
 end
