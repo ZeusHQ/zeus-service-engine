@@ -40,11 +40,11 @@ module Zeus
           }, status: status
         end
 
-        def render_resource(resource, status=200)
+        def render_resource(resource, type, status=200)
           render json: {
             object: resource,
             success: true,
-            type: resource.class.name
+            type: type,
           }, status: status
         end
 

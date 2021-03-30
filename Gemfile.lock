@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    zeus-service-engine (0.4.1)
+    zeus-service-engine (0.4.2)
       rails (~> 6.1.1)
       zeus_sdk (>= 0.6.3)
 
